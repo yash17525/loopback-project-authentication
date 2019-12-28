@@ -1,0 +1,24 @@
+extends ../layouts/layout
+
+block content
+  .row
+    .col-md-6.col-md-offset-3
+      if user && user.username
+        h1 User Logged in
+        h3 Hello #{user.username}
+        ul
+          li
+            a(href='/') Home
+          li
+            a(href='/auth/logout') Log Out
+
+      //- form#newuser(role='form', action='/api/users', method='post')
+      form(role='form', action='/auth/verify', method='get')
+        .form-group
+          label(for='otp') OTP
+          input.form-control(type='text', name='otp')
+        button.btn.btn-default(type='submit') Submit
+      br
+      if (messages.error)
+        p
+          span(style="color:red")= messages.error

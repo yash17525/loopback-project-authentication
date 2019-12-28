@@ -32,7 +32,7 @@ var bodyParser = require('body-parser');
  * if any. This is often the best approach, because the verify callback
  * can make the most accurate determination of why authentication failed.
  */
-var flash      = require('express-flash');
+var flash = require('express-flash');
 
 // attempt to build the providers/passport config
 var config = {};
@@ -81,57 +81,175 @@ passportConfigurator.setupModels({
   userIdentityModel: app.models.userIdentity,
   userCredentialModel: app.models.userCredential,
 });
+
+/* ####################################################################################################### */
+var utils = require('../node_modules/loopback-component-passport/lib/models/utils');
+var customProfileToUser = function (provider, profile, options) {
+  // Let's create a user for that
+  var profileEmail = profile.emails && profile.emails[0] &&
+    profile.emails[0].value;
+  // var generatedEmail = (profile.username || profile.id) + '@loopback.' +
+  //           (profile.provider || provider) + '.com';
+  // var email = provider === 'ldap' ? profileEmail : generatedEmail;
+  // var username = provider + '.' + (profile.username || profile.id);
+  var username = profile.username;
+  var password = utils.generateKey('password');
+  var userObj = {
+    username: username,
+    password: password,
+  };
+  // if (email) {
+  //   userObj.email = email;
+  // }
+  if (profileEmail) {
+    userObj.email = profileEmail;
+  }
+  return userObj;
+}
+
+var messageProvider = function(countryCode,mobile,token){
+
+  const accountSid = 'AC699135a39630eef9c93531ece5a14239';
+  const authToken = '3f44a4c50b511c1be8f15c0e799b92a8';
+  const client = require('twilio')(accountSid, authToken);
+
+  client.messages
+    .create({
+      body: 'This is your OTP for login: ' + token,
+      from: '+12012926522',
+      to: countryCode + mobile
+    })
+    .then(message => console.log('message sid ' ,message.sid));
+}
+
+// var customCallback = function(req,res,next){
+//   var tokenValidates = speakeasy.totp.verify({
+//     secret:secret.base32,
+//     encoding:'base32',
+//     token: req.body.otp,
+//     window : 6
+// });
+
+var passReqToCallback = ()=>{
+  
+}
+
+if(tokenValidates){
+  res.send('successfully verified');
+}
+}
+
+/* ############################################################################################# */
 for (var s in config) {
   var c = config[s];
+  c.profileToUser = customProfileToUser;
+  c.messageProvider = messageProvider;
   c.session = c.session !== false;
   passportConfigurator.configureProvider(s, c);
 }
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
-app.get('/', function(req, res, next) {
-  res.render('pages/index', {user:
-    req.user,
+app.get('/', function (req, res, next) {
+  res.render('pages/index', {
+    user:
+      req.user,
     url: req.url,
   });
 });
 
-app.get('/auth/account', ensureLoggedIn('/login'), function(req, res, next) {
+app.get('/auth/account', ensureLoggedIn('/login'), function (req, res, next) {
   res.render('pages/loginProfiles', {
     user: req.user,
     url: req.url,
   });
 });
 
-app.get('/local', function(req, res, next) {
+app.get('/local', function (req, res, next) {
   res.render('pages/local', {
     user: req.user,
     url: req.url,
   });
 });
 
-app.get('/ldap', function(req, res, next) {
+app.get('/otp', function (req, res, next) {
+  res.render('pages/otp', {
+    user: req.user,
+    url: req.url,
+  });
+});
+
+app.get('/read-otp', function (req, res, next) {
+  res.json({'key':'sdkfhdk'});
+  // res.render('pages/readOtp', {
+  //   user: req.user,
+  //   url: req.url,
+  // });
+});
+
+var speakeasy = require('speakeasy');
+var secret = speakeasy.generateSecret({length:20});
+var token = speakeasy.totp({
+    secret : secret.base32,
+    encoding : 'base32'
+});
+
+// app.post('/tempo/otp', function (req, res, next) {
+
+//   const accountSid = 'AC699135a39630eef9c93531ece5a14239';
+//   const authToken = '3f44a4c50b511c1be8f15c0e799b92a8';
+//   const client = require('twilio')(accountSid, authToken);
+
+//   client.messages
+//     .create({
+//       body: 'This is your OTP for login: ' + token,
+//       from: '+12012926522',
+//       statusCallback: 'http://postb.in/1234abcd',
+//       to: req.body.countryCode + req.body.mobile
+//     })
+//     .then(message => console.log(message.sid));
+//   res.render('pages/verify');
+// });
+
+// app.post('/otp/verify',function(req,res,next){
+//     var tokenValidates = speakeasy.totp.verify({
+//       secret:secret.base32,
+//       encoding:'base32',
+//       token: req.body.otp,
+//       window : 6
+//   });
+
+//   if(tokenValidates){
+//     res.send('successfully verified');
+//   }
+  
+// });
+
+
+app.get('/ldap', function (req, res, next) {
   res.render('pages/ldap', {
     user: req.user,
     url: req.url,
   });
 });
 
-app.get('/signup', function(req, res, next) {
+app.get('/signup', function (req, res, next) {
   res.render('pages/signup', {
     user: req.user,
     url: req.url,
   });
 });
 
-app.post('/signup', function(req, res, next) {
+app.post('/signup', function (req, res, next) {
   var User = app.models.user;
 
   var newUser = {};
   newUser.email = req.body.email.toLowerCase();
   newUser.username = req.body.username.trim();
   newUser.password = req.body.password;
+  newUser.emailVerified = true;
+  newUser.bio = req.body.Bio;
 
-  User.create(newUser, function(err, user) {
+  User.create(newUser, function (err, user) {
     if (err) {
       req.flash('error', err.message);
       return res.redirect('back');
@@ -140,7 +258,7 @@ app.post('/signup', function(req, res, next) {
       // that can be used to establish a login session. This function is
       // primarily used when users sign up, during which req.login() can
       // be invoked to log in the newly registered user.
-      req.login(user, function(err) {
+      req.login(user, function (err) {
         if (err) {
           req.flash('error', err.message);
           return res.redirect('back');
@@ -151,21 +269,21 @@ app.post('/signup', function(req, res, next) {
   });
 });
 
-app.get('/login', function(req, res, next) {
+app.get('/login', function (req, res, next) {
   res.render('pages/login', {
     user: req.user,
     url: req.url,
   });
 });
 
-app.get('/auth/logout', function(req, res, next) {
+app.get('/auth/logout', function (req, res, next) {
   req.logout();
   res.redirect('/');
 });
 
-app.start = function() {
+app.start = function () {
   // start the web server
-  return app.listen(function() {
+  return app.listen(function () {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);

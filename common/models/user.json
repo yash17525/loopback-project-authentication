@@ -2,6 +2,27 @@
   "name": "user",
   "plural": "users",
   "base": "User",
+  "properties": {
+    "bio": {
+      "type": "string",
+      "required": true,
+      "default": "\"user has not entered his bio\""
+    },
+    "address": {
+      "type": "string"
+    },
+    "country-code": {
+      "type": "string",
+      "required": true,
+      "default": "\"user has not entered his country code\""
+    },
+    "moibile-number": {
+      "type": "number",
+      "required": true,
+      "default": "\"not entered mobile number\""
+    }
+  },
+  "validations": [],
   "relations": {
     "accessTokens": {
       "type": "hasMany",
@@ -19,7 +40,6 @@
       "foreignKey": "userId"
     }
   },
-  "validations": [],
   "acls": [],
-  "methods": []
+  "methods": {}
 }
