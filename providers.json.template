@@ -123,5 +123,18 @@
     "failureRedirect": "/login",
     "scope": ["email", "profile"], 
     "failureFlash": true
+  },
+  "otp": {
+    "authScheme": "otp",
+    "provider":"passport-otp",
+    "module": "passport-otp",
+    "countryCodeField": "+91",
+    "authPath": "/auth/otp",
+    "callbackPath": "/auth/verify",
+    "successRedirect": "/auth/account",
+    "failureRedirect": "/otp",
+    "failureFlash": true,
+    "callbackHTTPMethod": "post",
+    "modelToSaveGeneratdKeys": "otpSecret"
   }
 }
