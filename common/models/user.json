@@ -2,6 +2,21 @@
   "name": "user",
   "plural": "users",
   "base": "User",
+  "properties": {
+    "bio": {
+      "type": "string",
+      "required": true,
+      "default": "\"user has not entered his bio\""
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
   "relations": {
     "accessTokens": {
       "type": "hasMany",
@@ -19,7 +34,6 @@
       "foreignKey": "userId"
     }
   },
-  "validations": [],
   "acls": [],
-  "methods": []
+  "methods": {}
 }

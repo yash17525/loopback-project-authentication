@@ -1,6 +1,17 @@
 {
-  "db": {
-    "name": "db",
+  "memoryDB": {
+    "name": "memoryDB",
     "connector": "memory"
+  },
+  "db": {
+    "host": "local",
+    "port": 27017,
+    "url": "mongodb://localhost:27017/my-mongo-db",
+    "database": "my-mongo-db",
+    "password": "",
+    "name": "db",
+    "user": "",
+    "useNewUrlParser": true,
+    "connector": "mongodb"
   }
 }

@@ -33,5 +33,9 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "otpSecret": {
+    "dataSource": "db",
+    "public": true
   }
 }
