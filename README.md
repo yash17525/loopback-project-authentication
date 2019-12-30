@@ -27,6 +27,7 @@ Before starting this tutorial, make sure you have the following installed:
 - Node
 - NPM
 - [StrongLoop Controller](https://github.com/strongloop/strongloop)
+- Postman (API testing tool)
 
 ## Client ids/secrets from third party
 
@@ -107,12 +108,15 @@ or after
 ```
 $ node .
 ```
+- Open Postman(API Testing Tool) to check the api end points for /auth/otp and /auth/verify
+- Make a GET request by replacing countryCode ,YourMobileNumber with your own country code and mobile number : http://127.0.0.1:3000/auth/otp?countryCode=%2BcountryCode&mobile=YourMobileNumber
+ ![image](https://user-images.githubusercontent.com/33418013/71595155-88c9c200-2b60-11ea-9e6f-0be9a94b04bd.png)
 
-- Open your browser to `http://localhost:3000`
-- Click on 'Log in' (in the header, on the rigth)
-- Click on 'Login using OTP'.
-- Enter your mobile number and request for OTP.
-- Enter OTP received on mobile and then submit
+- After receiving the OTP on mobile, make a POST request as such : http://127.0.0.1:3000/auth/verify  and supply the countryCode, mobile, OTP by the request body as a JSON Object,like this ;
+- {	"countryCode":"+91",
+	"mobile":"82198404086"
+	"token":"348790"}
+  ![image](https://user-images.githubusercontent.com/33418013/71594966-e14c8f80-2b5f-11ea-8b8c-9e09f6486800.png)
 - If OTP is valid you will be logged in as a user.
 
 ## Tutorial - Facebook
