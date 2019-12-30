@@ -1,7 +1,7 @@
 # loopback-project-authentication
 
 A tutorial for setting up a basic configuration :
-- for passport-otp module which login a user using OTP method
+- for [passport-otp](https://github.com/yash17525/passport-otp.git) module which login a user using OTP method
 - for passport-local
 - for third party login provider (facebook, google, twitter etc.) 
 
@@ -18,7 +18,7 @@ LoopBack's user/userIdentity/userCredential models and [passport](http://passpor
 
 - Log in or sign up to LoopBack using third party providers (aka social logins)
 - Link third party accounts with a LoopBack user (for example, a LoopBack user can have associated facebook/google accounts to retrieve pictures).
-- Log in to Loopback using OTP(one time password) method.
+- Log in to Loopback using OTP(one time password) method provided by [passport-otp](https://github.com/yash17525/passport-otp.git) module.
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ Before starting this tutorial, make sure you have the following installed:
 - Keys from the message provdier. For eg, [Twilio](https://www.twilio.com/authy/features/otp)
 
 
-## Tutorial - passport-otp
+## Tutorial - [passport-otp](https://github.com/yash17525/passport-otp.git)
 
 ### 1. Clone the application
 
