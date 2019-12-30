@@ -1,6 +1,9 @@
-# loopback-example-passport
+# loopback-project-authentication
 
-A tutorial for setting up a basic passport example.
+A tutorial for setting up a basic configuration :
+- for passport-otp module which login a user using OTP method
+- for passport-local
+- for third party login provider (facebook, google, twitter etc.) 
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
