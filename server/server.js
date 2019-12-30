@@ -86,7 +86,7 @@ passportConfigurator.setupModels({
 /* ####################################################################################################### */
 var utils = require('../node_modules/loopback-component-passport/lib/models/utils');
 
-var messageProvider = function(phone,token){
+var messageProvider = function (phone, token) {
 
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -98,26 +98,19 @@ var messageProvider = function(phone,token){
       from: '+12012926522',
       to: phone // phone number actually consists of country code and 10 digit mobile number
     })
-    .then(message => console.log('message sid ' ,message.sid));
+    .then(message => console.log('message sid ', message.sid));
 }
 
 var customProfileToUser = function (provider, profile, options) {
-  // Let's create a user for that
-  var profileEmail = profile.emails || profile.emails[0] || profile.emails[0].value;
-  // var generatedEmail = (profile.username || profile.id) + '@loopback.' +
-  //           (profile.provider || provider) + '.com';
-  // var email = provider === 'ldap' ? profileEmail : generatedEmail;
-  // var username = provider + '.' + (profile.username || profile.id);
+  var profileEmail = profile.emails && profile.emails[0] && profile.emails[0].value;
   var username = profile.username;
   var password = utils.generateKey('password');
+  var phone = profile.phone
   var userObj = {
     password: password,
     username: username,
-    phone : profile.phone
+    phone: phone
   };
-  // if (email) {
-  //   userObj.email = email;
-  // }
   if (profileEmail) {
     userObj.email = profileEmail;
   }
@@ -127,7 +120,7 @@ var customProfileToUser = function (provider, profile, options) {
 /* ############################################################################################# */
 for (var s in config) {
   var c = config[s];
-  if(c.module === 'passport-otp'){
+  if (c.module === 'passport-otp') {
     c.messageProvider = messageProvider;
     // c.OtpSecret = app.models.otpSecret;
   }
@@ -167,10 +160,10 @@ app.get('/otp', function (req, res, next) {
 });
 
 var speakeasy = require('speakeasy');
-var secret = speakeasy.generateSecret({length:20});
+var secret = speakeasy.generateSecret({ length: 20 });
 var token = speakeasy.totp({
-    secret : secret.base32,
-    encoding : 'base32'
+  secret: secret.base32,
+  encoding: 'base32'
 });
 app.post('/tempo/otp', function (req, res, next) {
 
@@ -195,18 +188,18 @@ app.post('/tempo/otp', function (req, res, next) {
   res.render('pages/verify');
 });
 
-app.post('/otp/verify',function(req,res,next){
-    var tokenValidates = speakeasy.totp.verify({
-      secret:secret.base32,
-      encoding:'base32',
-      token: req.body.otp,
-      window : 6
+app.post('/otp/verify', function (req, res, next) {
+  var tokenValidates = speakeasy.totp.verify({
+    secret: secret.base32,
+    encoding: 'base32',
+    token: req.body.otp,
+    window: 6
   });
 
-  if(tokenValidates){
+  if (tokenValidates) {
     res.send('successfully verified');
   }
-  
+
 });
 
 
