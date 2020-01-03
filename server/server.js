@@ -86,19 +86,19 @@ passportConfigurator.setupModels({
 /* ####################################################################################################### */
 var utils = require('../node_modules/loopback-component-passport/lib/models/utils');
 
-var messageProvider = function (phone, token) {
-
+var messageProvider = async function (phone, token) {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const client = require('twilio')(accountSid, authToken);
 
-  client.messages
+  let result = await client.messages
     .create({
       body: 'This is your OTP for login: ' + token,
-      from: '+12012926522',
+      from: process.env.TWILIO_MOBILE_NUMBER,
       to: phone // phone number actually consists of country code and 10 digit mobile number
     })
-    .then(message => console.log('message sid ', message.sid));
+
+    return result;
 }
 
 var customProfileToUser = function (provider, profile, options) {
@@ -120,10 +120,9 @@ var customProfileToUser = function (provider, profile, options) {
 /* ############################################################################################# */
 for (var s in config) {
   var c = config[s];
-  if (c.module === 'passport-otp') {
-    c.messageProvider = messageProvider;
-    // c.OtpSecret = app.models.otpSecret;
-  }
+  // if (c.module === 'passport-otp') {
+  //   c.messageProvider = messageProvider;
+  // }
   c.profileToUser = customProfileToUser;
   c.session = c.session !== false;
   passportConfigurator.configureProvider(s, c);

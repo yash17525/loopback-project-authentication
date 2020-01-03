@@ -126,15 +126,25 @@
   },
   "otp": {
     "authScheme": "otp",
-    "provider":"passport-otp",
+    "provider": "passport-otp",
     "module": "passport-otp",
-    "countryCodeField": "+91",
     "authPath": "/auth/otp",
     "callbackPath": "/auth/verify",
     "successRedirect": "/auth/account",
     "failureRedirect": "/otp",
     "failureFlash": true,
     "callbackHTTPMethod": "post",
-    "modelToSaveGeneratdKeys": "otpSecret"
+    "modelToSaveGeneratedKeys": "YOUR_MODEL_NAME (schema for model is : phone(string),secret(string) )",
+    "sendOtpVia": "choose one of "phone" or "email"",
+    "emailInfo": {
+      "gmail": "YOUR_GMAIL_ID",
+      "password": "GMAIL_PASSWORD",
+      "emailSubject": "OTP for login to <YOUR_APPLICATION_NAME>"
+    },
+    "twilioInfo": {
+      "accountSid": "TWILIO_ACCOUNT_SID",
+      "authToken":"TWILIO_ACCOUNT_AUTH_TOKEN",
+      "mobileNumber": "TWILIO_ACCOUNT_MOBILE_NUMBER"
+    }
   }
 }
