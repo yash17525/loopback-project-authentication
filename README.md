@@ -72,7 +72,6 @@ in against "modelToSaveGeneratedKeys"
 	- Note: If you don't want to use custom method, then comment the lines you have uncommented earlier while passing the configuration to Passport Configurator.
 	
   ```
-   },
   "otp": {
     "authScheme": "otp",
     "provider": "passport-otp",
@@ -88,15 +87,17 @@ in against "modelToSaveGeneratedKeys"
     "emailInfo": {
       "gmail": "YOUR_GMAIL_ID",
       "password": "GMAIL_PASSWORD",
-      "emailSubject": "OTP for login to <YOUR_APPLICATION_NAME>"
+      "emailSubject": "<Email Subject> , this field is optional",
+      "messageBody" : "<Message Body> this field is optional"
     },
     "twilioInfo": {
       "accountSid": "TWILIO_ACCOUNT_SID",
       "authToken":"TWILIO_ACCOUNT_AUTH_TOKEN",
-      "mobileNumber": "TWILIO_ACCOUNT_MOBILE_NUMBER"
-    }
+      "mobileNumber": "TWILIO_ACCOUNT_MOBILE_NUMBER",
+      "messageBody" : "<Message Body> this field is optional"
+    },
+    "window":"<window>"
   }
-}
   ```
 
 ### 4. Data file
