@@ -134,7 +134,7 @@
     "failureRedirect": "/otp",
     "failureFlash": true,
     "callbackHTTPMethod": "post",
-    "modelToSaveGeneratedKeys": "YOUR_MODEL_NAME (schema for model is : identy(string),secret(string) )",
+    "modelToSaveGeneratedKeys": "YOUR_MODEL_NAME (schema for model is : identity(string),secret(string) )",
     "sendOtpVia": "choose one of "phone" or "email"",
     "emailInfo": {
       "gmail": "YOUR_GMAIL_ID",

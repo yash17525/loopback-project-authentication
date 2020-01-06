@@ -86,19 +86,23 @@ passportConfigurator.setupModels({
 /* ####################################################################################################### */
 var utils = require('../node_modules/loopback-component-passport/lib/models/utils');
 
-var messageProvider = async function (phone, token) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const client = require('twilio')(accountSid, authToken);
 
-  let result = await client.messages
-    .create({
-      body: 'This is your OTP for login: ' + token,
-      from: process.env.TWILIO_MOBILE_NUMBER,
-      to: phone // phone number actually consists of country code and 10 digit mobile number
-    })
+// custom method to send OTP
+var messageProvider = async function (type,emailOrPhone, token) {
+  if(type == 'phone'){
+    // emaiOrPhone field will contain phone number
 
-    return result;
+    /*your custom implementation to send OTP to user*/
+
+    // return the result
+  }
+  if(type == 'email'){
+    // emailOrPhone field will contain email-id of user
+
+    /* write your own custom code to send OTP via email */
+
+    //return the result
+  }
 }
 
 var customProfileToUser = function (provider, profile, options) {
@@ -117,7 +121,9 @@ var customProfileToUser = function (provider, profile, options) {
   return userObj;
 }
 
-/* ############################################################################################# */
+
+
+/* #############  Sending the configuration form provider.json to  Passport Configurator  ###################### */
 for (var s in config) {
   var c = config[s];
   // if (c.module === 'passport-otp') {
