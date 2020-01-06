@@ -34,7 +34,7 @@ Before starting this tutorial, make sure you have the following installed:
 - [facebook](https://developers.facebook.com/apps)
 - [google](https://console.developers.google.com/project)
 - [twitter](https://apps.twitter.com/)
-- Keys from the message provdier. For eg, [Twilio](https://www.twilio.com/authy/features/otp)
+- Keys from the message provdier. For eg, [Twilio SMS Service](https://www.twilio.com/authy/features/otp)
 
 
 ## Tutorial - [passport-otp](https://github.com/yash17525/passport-otp.git)
@@ -47,40 +47,52 @@ $ cd loopback-project-authentication
 $ npm install
 ```
 
-### 2. Get your keys(Auth Token, Account SID) from the twilio or any other service provider for sending messages.
+### 2. Get your keys(Auth Token, Account SID) and Twilio-Mobile-Number from your Twilio Account.
 
 - Visit your twilio account
 - In the dashboard, you will see your Account SID and Auth Token
+- Get one twilio mobile number from your account for testing purpose.
 
 ### 3. Create providers.json
 
 - Copy providers.json.template to providers.json
-- Update providers.json with your own values for `clientID/clientSecret` for third party login providers if any.
-- There is no need to change configuration for passport-otp.
+- Under "otp" configuration do the following things:
+1. Generate your model for saving tokens/OTP (with schema identity(string),secret(string) ) and enter the name of the model
+in against "modelToSaveGeneratedKeys"
+2. Select one of the options from "email", "phone" for "sendOtpVia" field.
+3. For "sendOtpVia" : "email" , enter your "emailInfo" and for "sendOtpVia":"phone" enter your "twilioInfo" using information from your twilio account.
+4. Your may also override the default SMS service (twilio) by passing your custom method for SMS service.
 
   ```
    },
   "otp": {
     "authScheme": "otp",
-    "provider":"passport-otp",
+    "provider": "passport-otp",
     "module": "passport-otp",
-    "countryCodeField": "+91",
     "authPath": "/auth/otp",
     "callbackPath": "/auth/verify",
     "successRedirect": "/auth/account",
     "failureRedirect": "/otp",
     "failureFlash": true,
     "callbackHTTPMethod": "post",
-    "modelToSaveGeneratdKeys": "otpSecret"
+    "modelToSaveGeneratedKeys": "YOUR_MODEL_NAME (schema for model is : identity(string),secret(string) )",
+    "sendOtpVia": "choose one of "phone" or "email"",
+    "emailInfo": {
+      "gmail": "YOUR_GMAIL_ID",
+      "password": "GMAIL_PASSWORD",
+      "emailSubject": "OTP for login to <YOUR_APPLICATION_NAME>"
+    },
+    "twilioInfo": {
+      "accountSid": "TWILIO_ACCOUNT_SID",
+      "authToken":"TWILIO_ACCOUNT_AUTH_TOKEN",
+      "mobileNumber": "TWILIO_ACCOUNT_MOBILE_NUMBER"
+    }
   }
 }
   ```
   ```
 
-### 4. Create .env 
-Copy .env_sample to .env and replace dummy variables with your Auth Token and Account SID.
-
-### 5. Data file
+### 4. Data file
 
 - If you need to see your account info for testing purposes, in `server\datasources.json`, add:
 
@@ -103,21 +115,34 @@ or after
 
 - The account info will be saved into this file.
 
-### 6. Run the application
+### 5. Run the application
 
 ```
 $ node .
 ```
 - Open Postman(API Testing Tool) to check the api end points for /auth/otp and /auth/verify
-- Make a GET request by replacing countryCode ,YourMobileNumber with your own country code and mobile number : http://127.0.0.1:3000/auth/otp?countryCode=%2BcountryCode&mobile=YourMobileNumber
+- If "sendOtpVia" field in provider.json is "phone" then you have to make a GET request using your mobile number and if "sendOtpVia" field is "email" then make a GET request with your email-id.
+- For "sendOtpVia" as "phone", make a GET request by replacing countryCode ,YourMobileNumber with your own country code and mobile number : http://127.0.0.1:3000/auth/otp?countryCode=%2BcountryCode&mobile=YourMobileNumber
  ![image](https://user-images.githubusercontent.com/33418013/71595155-88c9c200-2b60-11ea-9e6f-0be9a94b04bd.png)
+-For "sendOtpVia" as "gmail", make a GET request as follows by repalcing userEmail with user's email:
+http://127.0.0.1:3000/auth/otp?email=userEmail
+![image](https://user-images.githubusercontent.com/33418013/71800614-95797900-307e-11ea-91de-1a27b8f0019f.png)
 
-- After receiving the OTP on mobile, make a POST request as such : http://127.0.0.1:3000/auth/verify  and supply the countryCode, mobile, OTP by the request body as a JSON Object,like this ;
-- {	"countryCode":"+91",
+- After receiving the OTP on mobile/email account, make a POST request ( http://127.0.0.1:3000/auth/verify ) and supply the (countryCode, mobile, OTP)  or (email,OTP) by the request body as a JSON Object.
+- For making post request using phone,
+{	"countryCode":"+91",
 	"mobile":"82198404086"
 	"token":"348790"}
   ![image](https://user-images.githubusercontent.com/33418013/71594966-e14c8f80-2b5f-11ea-8b8c-9e09f6486800.png)
+ - For making post request using email, request json body will be :
+ {
+	"token":"715542",
+	"email":"yashwant2451@gmail.com"
+}
+ ![image](https://user-images.githubusercontent.com/33418013/71800800-0d47a380-307f-11ea-8a78-a1d7b1a37e6b.png)
+
 - If OTP is valid you will be logged in as a user.
+
 
 ## Tutorial - Facebook
 
