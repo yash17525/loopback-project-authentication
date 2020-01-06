@@ -39,7 +39,7 @@ Before starting this tutorial, make sure you have the following installed:
 
 ## Tutorial - [passport-otp](https://github.com/yash17525/passport-otp.git)
 
-### 1. Clone the application
+### 1. Quick Start
 
 ```
 $ git clone https://github.com/yash17525/loopback-project-authentication.git
