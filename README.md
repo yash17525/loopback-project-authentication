@@ -61,8 +61,14 @@ $ npm install
 in against "modelToSaveGeneratedKeys"
 2. Select one of the options from "email", "phone" for "sendOtpVia" field.
 3. For "sendOtpVia" : "email" , enter your "emailInfo" and for "sendOtpVia":"phone" enter your "twilioInfo" using information from your twilio account.
-4. Your may also override the default SMS service (twilio) by passing your custom method for SMS service.
+4. Your may also override the default SMS service (twilio) by passing your custom method for SMS service. See, [messageProvider](server/server.js) in server.js file. You may declare a similar custom method which will take two arguments namely phone and token. Then, you have to pass this function to configureProvider method of Passport Configurator. For example, in the server.js file;
+	- Define your custom method :
+	![image](https://user-images.githubusercontent.com/33418013/71803411-b8a82680-3086-11ea-9db0-3bc466b21cdb.png)
 
+	- Pass this method messageProvider to the Passport Configurator.(Lookup the code given in the image below in server.js and uncomment the commented statements.
+	![image](https://user-images.githubusercontent.com/33418013/71803809-bbefe200-3087-11ea-9f87-18d9319cf3f6.png)
+	- It's all of your responsibility to implement the custom method. otp-passport module will just call this method with user phone number and generated token.
+	
   ```
    },
   "otp": {
