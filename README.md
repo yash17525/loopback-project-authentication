@@ -123,7 +123,7 @@ $ node .
 - If "sendOtpVia" field in provider.json is "phone" then you have to make a GET request using your mobile number and if "sendOtpVia" field is "email" then make a GET request with your email-id.
 - For "sendOtpVia" as "phone", make a GET request by replacing countryCode ,YourMobileNumber with your own country code and mobile number : http://127.0.0.1:3000/auth/otp?countryCode=%2BcountryCode&mobile=YourMobileNumber
  ![image](https://user-images.githubusercontent.com/33418013/71595155-88c9c200-2b60-11ea-9e6f-0be9a94b04bd.png)
--For "sendOtpVia" as "gmail", make a GET request as follows by repalcing userEmail with user's email:
+- For "sendOtpVia" as "gmail", make a GET request as follows by repalcing userEmail with user's email:
 http://127.0.0.1:3000/auth/otp?email=userEmail
 ![image](https://user-images.githubusercontent.com/33418013/71800614-95797900-307e-11ea-91de-1a27b8f0019f.png)
 
