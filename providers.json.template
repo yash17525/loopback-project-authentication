@@ -139,12 +139,14 @@
     "emailInfo": {
       "gmail": "YOUR_GMAIL_ID",
       "password": "GMAIL_PASSWORD",
-      "emailSubject": "OTP for login to <YOUR_APPLICATION_NAME>"
+      "emailSubject": "<Email Subject> , this field is optional",
+      "messageBody" : "<Message Body> this field is optional"
     },
     "twilioInfo": {
       "accountSid": "TWILIO_ACCOUNT_SID",
       "authToken":"TWILIO_ACCOUNT_AUTH_TOKEN",
-      "mobileNumber": "TWILIO_ACCOUNT_MOBILE_NUMBER"
+      "mobileNumber": "TWILIO_ACCOUNT_MOBILE_NUMBER",
+      "messageBody" : "<Message Body> this filed is optional"
     }
   }
 }
