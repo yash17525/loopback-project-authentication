@@ -4,10 +4,19 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-
-module.exports = function(server) {
-  // Install a `/` route that returns server status
-  var router = server.loopback.Router();
-  router.get('/status', server.loopback.status());
-  server.use(router);
-};
+var config = require('../../providers.json');
+module.exports = function (app) {
+  const router = app.loopback.Router();
+  var model;
+  for (var s in config) {
+    var c = config[s];
+    if (c.authScheme == "otp") {
+      var model = c.modelToSaveGeneratedKeys;
+      if (!app.models[model]) {
+        console.log('model \'' + model +'\' doesn\'t exist');
+        process.exit();
+      }
+      break;
+    }
+  }
+}
