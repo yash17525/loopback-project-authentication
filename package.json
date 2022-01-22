@@ -22,7 +22,7 @@
     "loopback-component-explorer": "^6.3.1",
     "loopback-component-passport": "^2.2.0",
     "loopback-connector-mongodb": "^4.2.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "passport": "^0.2.0",
     "passport-facebook": "^1.0.3",
     "passport-google-oauth": "^0.1.5",
